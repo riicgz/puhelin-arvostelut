@@ -10,3 +10,23 @@
 * Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjän lisäämät arvostelut.
 * Käyttäjä pystyy valitsemaan arvostelulle yhden tai useamman luokittelun (esim. käyttöjärjestelmä, tuottaja, julkaisuaika).
 * Käyttäjä pystyy jättämään kommentin arvosteluun.
+
+## Sovelluksen asennus
+
+Asenna `flask`-kirjasto:
+
+```
+$ pip install flask
+```
+
+Luo tietokannan taulut:
+
+```
+$ sqlite3 database.db < schema.sql
+```
+
+Voit käynnistää sovelluksen näin:
+
+```
+$ flask run
+```
