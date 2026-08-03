@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Uusi arvostelu</title>
+</head>
+
+<body>
+  <h1>Uusi arvostelu</h1>
+  <form action="/create_item" method="post">
+    <p>
+      Malli: <br />
+      <input type="text" name="title" />
+    </p>
+    <p>
+      Arvostelu: <br />
+      <textarea name="description"rows="8" cols="60"></textarea>
+    </p>
+    <p>
+      Arvio: <br />
+      <input type="text" name="price" size="8" /> €
+    </p>
+    <input type="submit" value="Create post" />
+  </form>
+</body>
+
+</html>
