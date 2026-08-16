@@ -5,6 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import config
 import db
 import items
+import re
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -44,8 +45,14 @@ def new_item():
 def create_item():
     require_login()
     title = request.form["title"]
+    if not title or len(title) > 50:
+        abort(403)
     description = request.form["description"]
+    if not description or len(description) > 2000:
+        abort(403)
     verdict = request.form["verdict"]
+    if not re.search("^[0-5]$", verdict):
+        abort(403)
     user_id = session["user_id"]
 
     items.add_item(title, description, verdict, user_id)
@@ -141,6 +148,6 @@ def login():
 @app.route("/logout")
 def logout():
     if "user_id" in session:
-        def session["user_id"]
+        del session["user_id"]
         del session["username"]
     return redirect("/")
