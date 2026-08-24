@@ -8,6 +8,13 @@ CREATE TABLE items (
     id INTEGER PRIMARY KEY,
     title TEXT,
     description TEXT,
-    price TEXT,
+    verdict TEXT,
     user_id INTEGER REFERENCES users
+);
+
+CREATE TABLE item_classes (
+    id INTEGER PRIMARY KEY,
+    item_id INTEGER REFERENCES items,
+    title TEXT,
+    value TEXT
 );

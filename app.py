@@ -42,7 +42,8 @@ def show_item(item_id):
     item = items.get_item(item_id)
     if not item:
         abort(404)
-    return render_template("show_item.html", item=item)
+    classes = items.get_classes(item_id)
+    return render_template("show_item.html", item=item, classes=classes)
 
 @app.route("/new_item")
 def new_item():
@@ -62,6 +63,14 @@ def create_item():
     if not re.search("^[0-5]$", verdict):
         abort(403)
     user_id = session["user_id"]
+
+    classes = []
+    os = request.form("os")
+    if os:
+        classes.append(("Käyttöjärjestelmä", os))
+    maker = request.form("maker")
+    if maker:
+        classes.append(("Valmistaja", maker))
 
     items.add_item(title, description, verdict, user_id)
 
@@ -84,7 +93,7 @@ def update_item():
     item = items.get_item(item_id)
     if not item:
         abort(404)
-    if item["item_id"] != session["user_id"]:
+    if item["user_id"] != session["user_id"]:
         abort(403)
     title = request.form["title"]
     if not title or len(title) > 50:
