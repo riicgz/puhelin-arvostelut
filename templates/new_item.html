@@ -20,28 +20,17 @@
       Arvio: <br />
       <input type="text" name="verdict" size="8" pattern="[0-5]" required/> /5
     </p>
+    {% for class in classes %}
     <p>
-      Käyttöjärjestelmä: <br />
-      <select name="os">
+      {{ class }}: <br />
+      <select name="classes">
         <option value="">(valitse)</option>
-        <option value="ios">iOS</option>
-        <option value="android">Android</option>
-        <option value="other">Muu</option>
+      {% for option in classes[class] %}
+        <option value="{{ class }}:{{ option }}">{{ option }}</option>
+      {% endfor %}
       </select>
     </p>
-    <p>
-      Valmistaja: <br />
-      <select name="maker">
-        <option value="">(valitse)</option>
-        <option value="apple">Apple</option>
-        <option value="samsung">Samsung</option>
-        <option value="Google">Google</option>
-        <option value="Xiaomi">Xiaomi</option>
-        <option value="vivo">vivo</option>
-        <option value="oppo">OPPO</option>
-        <option value="other">Muu</option>
-      </select>
-    </p>
+    {% endfor %}
     <input type="submit" value="Create post" />
   </form>
 </body>

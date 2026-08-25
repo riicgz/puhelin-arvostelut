@@ -48,7 +48,8 @@ def show_item(item_id):
 @app.route("/new_item")
 def new_item():
     require_login()
-    return render_template("new_item.html")
+    classes = items.get_all_classes()
+    return render_template("new_item.html", classes=classes)
 
 @app.route("/create_item", methods=["POST"])
 def create_item():
@@ -65,14 +66,12 @@ def create_item():
     user_id = session["user_id"]
 
     classes = []
-    os = request.form("os")
-    if os:
-        classes.append(("Käyttöjärjestelmä", os))
-    maker = request.form("maker")
-    if maker:
-        classes.append(("Valmistaja", maker))
+    for entry in request.form.getlist("classes"):
+        if entry:
+            parts = entry.split(":")
+            classes.append((parts[0], parts[1]))
 
-    items.add_item(title, description, verdict, user_id)
+    items.add_item(title, description, verdict, user_id, classes)
 
     return redirect("/")
 
