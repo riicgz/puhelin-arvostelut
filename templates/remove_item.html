@@ -3,11 +3,15 @@
 {% block title %}Arvostelun poisto{% endblock %}
 
 {% block content %}
-<h2>Arvostelun poisto</h2>
+<h2>{{ item.title }}</h2>
+<h3>Arvostelun poisto</h3>
 <p>Arvostelu: {{ item.title }}</p>
 <p>Haluatko varmasti poistaa arvostelun?:</p>
 <form action="/remove_item/{{ item.id }}" method="post">
   <input type="submit" name="remove" value="Kyllä">
   <input type="submit" name="back" value="Peruuta">
 </form>
+<p>
+  <a href="/item/{{ item.id }}">Takaisin arvosteluun</a>
+</p>
 {% endblock %}
