@@ -40,8 +40,8 @@ def show_user(user_id):
     user = users.get_user(user_id)
     if not user:
         abort(404)
-    items = users.get_items(user_id)
-    return render_template("show_user.html", user=user, items=items)
+    user_items = users.get_items(user_id)
+    return render_template("show_user.html", user=user, items=user_items)
 
 @app.route("/find_item")
 def find_item():
@@ -61,7 +61,8 @@ def show_item(item_id):
     classes = items.get_classes(item_id)
     comments = items.get_comments(item_id)
     images = items.get_images(item_id)
-    return render_template("show_item.html", item=item, classes=classes, comments=comments, images=images)
+    return render_template("show_item.html", item=item, classes=classes,
+                           comments=comments, images=images)
 
 @app.route("/image/<int:image_id>")
 def show_image(image_id):
@@ -112,7 +113,7 @@ def create_item():
     item_id = db.last_insert_id()
     return redirect("/item/" + str(item_id))
 
-@app.ruote("/create_comment", methods=["POST"])
+@app.route("/create_comment", methods=["POST"])
 def create_comment():
     require_login()
     check_csrf()
@@ -177,12 +178,12 @@ def add_image():
     if not file.filename.endswith(".png"):
         flash("VIRHE: väärä tiedostomuoto")
         return redirect("/images/" + str(item_id))
-    
+
     image = file.read()
     if len(image) > 100 * 1024:
         flash("VIRHE: liian suuri kuva")
         return redirect("/images/" + str(item_id))
-    
+
     items.add_image(item_id, image)
     return redirect("/image/" + str(item_id))
 
@@ -199,7 +200,7 @@ def remove_images():
         abort(403)
 
     for image_id in request.form.getlist("image_id"):
-        items.remove_image(item_id, image_id)
+        items.remove_images(item_id, image_id)
 
     return redirect("/images/" + str(item_id))
 
@@ -222,7 +223,7 @@ def update_item():
         abort(403)
 
     all_classes = items.get_all_classes()
-    
+
     classes = []
     for entry in request.form.getlist("classes"):
         if entry:
@@ -232,7 +233,7 @@ def update_item():
             if class_value not in all_classes[class_title]:
                 abort(403)
             classes.append((class_title, class_value))
-    
+
     items.update_item(item_id, title, description, classes)
 
     return redirect("/item/" + str(item_id))
@@ -280,7 +281,7 @@ def create():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
-            return render_template("login.html")
+        return render_template("login.html")
 
     if request.method == "POST":
         username = request.form["username"]
