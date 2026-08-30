@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{ % block title %}Muokkaa arvostelua{% endblock %}
+{% block title %}Muokkaa arvostelua{% endblock %}
 
 {% block content %}
 <h2>{{ item.title }}</h2>
@@ -17,7 +17,7 @@
   <input type="hidden" name="item_id" value="{{ item.id }}" />
   {% for class in all_classes %}
   <p>
-    <label for="class{{ class }}">{{ class }}</a>: <br />
+    <label for="class{{ class }}">{{ class }}</label>: <br />
     <select name="classes" id="class{{ class }}">
       <option value="">(valitse)</option>
     {% for option in all_classes[class] %}

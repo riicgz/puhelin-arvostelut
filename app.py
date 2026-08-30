@@ -109,8 +109,6 @@ def create_item():
             classes.append((class_title, class_value))
 
     items.add_item(title, description, verdict, user_id, classes)
-
-    item_id = db.last_insert_id()
     return redirect("/item/" + str(item_id))
 
 @app.route("/create_comment", methods=["POST"])
@@ -155,7 +153,7 @@ def edit_images(item_id):
     item = items.get_item(item_id)
     if not item:
         abort(404)
-    if item["user_id"] != session[item_id]:
+    if item["user_id"] != session["user_id"]:
         abort(403)
 
     images = items.get_images(item_id)

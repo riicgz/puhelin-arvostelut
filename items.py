@@ -25,7 +25,7 @@ def add_item(title, description, verdict, user_id, classes):
 
 def add_comment(item_id, user_id, content):
     sql = "INSERT INTO comments (item_id, user_id, content) VALUES (?, ?, ?)"
-    db.execute(sql, {item_id, user_id, content})
+    db.execute(sql, [item_id, user_id, content])
 
 def get_comments(item_id):
     sql = """SELECT comments.content, users.id user_id, users.username
@@ -43,7 +43,7 @@ def add_image(item_id, image):
     db.execute(sql, [item_id, image])
 
 def get_image(image_id):
-    sql = "SELECT iamge FROM images WHERE id = ?"
+    sql = "SELECT image FROM images WHERE id = ?"
     result = db.query(sql, [image_id])
     return result[0][0] if result else None
 
@@ -65,14 +65,16 @@ def get_items():
     return db.query(sql)
 
 def get_item(item_id):
-    sql = """SELECT items.title,
+    sql = """SELECT items.id,
+                    items.title,
                     items.description,
                     items.verdict,
+                    users.id user_id,
                     users.username
              FROM items, users
              WHERE items.user_id = users.id AND
                    items.id = ?"""
-    result = db.query(sql, [item_id])[0]
+    result = db.query(sql, [item_id])
     return result[0] if result else None
 
 def update_item(item_id, title, description, classes):
